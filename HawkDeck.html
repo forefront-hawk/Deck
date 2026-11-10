@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-ov="ui-sophisticated">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+<title>HawkDeck — Live DJ Turntable Scratching, Song Combiner &amp; Light-Show Performance Controller | forefronthawk.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&family=Orbitron:wght@600;800;900&family=Press+Start+2P&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#090B10;--panel:#121620;--line:#2A3040;--text:#F8FAFC;--mute:#94A3B8;--plate:#181D2A;--accent:#D4AF37;
+--deck1:#161B26;--deck2:#0C0F17;--deck-border:#C5A059;--plate-border:#384152;
+--font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark
+}
+@media(prefers-color-scheme:light){:root[data-theme="auto"]{--bg:#E8EBF0;--panel:#F8FAFC;--line:#CBD5E1;--text:#0F172A;--mute:#475569;--plate:#8B93A3;--deck1:#CBD5E1;--deck2:#94A3B8;--deck-border:#64748B;color-scheme:light}}
+:root[data-theme="dark"]{--bg:#07090E;--panel:#12141A;--line:#262A34;--text:#F1F5F9;--mute:#94A3B8;--plate:#4B505C;--deck1:#1A1C23;--deck2:#101216;--deck-border:#2D323E}
+:root[data-theme="light"]{--bg:#E8EBF0;--panel:#F8FAFC;--line:#CBD5E1;--text:#0F172A;--mute:#475569;--plate:#8B93A3;--deck1:#CBD5E1;--deck2:#94A3B8;--deck-border:#64748B;color-scheme:light}
+:root[data-theme="matrix"]{--bg:#010902;--panel:#031606;--line:#00FF41;--text:#00FF41;--mute:#15803D;--plate:#042409;--accent:#00FF41;--deck1:#031A07;--deck2:#010802;--deck-border:#00FF41}
+:root[data-theme="midnight"]{--bg:#020617;--panel:#0F172A;--line:#1E293B;--text:#E2E8F0;--mute:#64748B;--plate:#1E293B;--deck1:#0F172A;--deck2:#020617;--deck-border:#334155}
+:root[data-theme="cyberpunk"]{--bg:#0D0221;--panel:#19053B;--line:#4C1D95;--text:#F0ABFC;--mute:#C084FC;--plate:#2E1065;--deck1:#240046;--deck2:#10002B;--deck-border:#7E22CE}
+:root[data-theme="emerald"]{--bg:#021612;--panel:#062821;--line:#0F4C3E;--text:#D1FAE5;--mute:#6EE7B7;--plate:#114237;--deck1:#06342B;--deck2:#021B16;--deck-border:#059669}
+:root[data-theme="crimson"]{--bg:#160408;--panel:#280911;--line:#501322;--text:#FFE4E6;--mute:#FDA4AF;--plate:#3F101C;--deck1:#310B15;--deck2:#190409;--deck-border:#BE123C}
+:root[data-theme="nord"]{--bg:#2E3440;--panel:#3B4252;--line:#4C566A;--text:#ECEFF4;--mute:#D8DEE9;--plate:#434C5E;--deck1:#3B4252;--deck2:#2E3440;--deck-border:#4C566A}
+:root[data-theme="solarlight"]{--bg:#FDF6E3;--panel:#EEE8D5;--line:#D3CBB7;--text:#073642;--mute:#586E75;--plate:#93A1A1;--deck1:#E1DBCA;--deck2:#D3CBB7;--deck-border:#93A1A1;color-scheme:light}
+:root[data-theme="solardark"]{--bg:#002B36;--panel:#073642;--line:#2AA198;--text:#93A1A1;--mute:#657B83;--plate:#0A4452;--deck1:#073642;--deck2:#00212B;--deck-border:#586E75}
+:root[data-theme="mocha"]{--bg:#1E1E2E;--panel:#181825;--line:#313244;--text:#CDD6F4;--mute:#A6ADC8;--plate:#45475A;--deck1:#26273B;--deck2:#11111B;--deck-border:#585B70}
+:root[data-theme="contrast"]{--bg:#000000;--panel:#0A0A0A;--line:#FFFFFF;--text:#FFFFFF;--mute:#E2E8F0;--plate:#1F1F1F;--deck1:#0A0A0A;--deck2:#000000;--deck-border:#FFFFFF}
+/* Core Overlays (Sophisticated ForefrontHawk Default, Tech, Futuristic, Classic & 20 Hardware/OS Skins) */
+[data-ov="ui-sophisticated"]{--bg:#090B10;--panel:#121620;--line:#2A3040;--text:#F8FAFC;--mute:#94A3B8;--plate:#181D2A;--accent:#D4AF37;--deck1:#161B26;--deck2:#0C0F17;--deck-border:#C5A059}
+[data-ov="ui-sophisticated"] .bar{background:linear-gradient(180deg,rgba(22,27,38,0.96),rgba(14,17,24,0.98))!important;border:1px solid rgba(212,175,55,0.35)!important}
+[data-ov="ui-sophisticated"] .deck{border:2px solid #C5A059!important;box-shadow:0 18px 45px rgba(0,0,0,0.85)!important}
+[data-ov="ui-tech"]{--bg:#040B14;--panel:#071524;--line:#0EA5E9;--text:#E0F2FE;--mute:#38BDF8;--plate:#081C30;--accent:#00F5D4;--deck1:#07192B;--deck2:#030C16;--deck-border:#0EA5E9;--font:"JetBrains Mono",monospace}
+[data-ov="ui-tech"] .bar,[data-ov="ui-tech"] .deck{border-radius:3px!important;border-color:#0EA5E9!important}
+[data-ov="ui-futuristic"]{--bg:#060414;--panel:#110B29;--line:#8B5CF6;--text:#F3E8FF;--mute:#C4B5FD;--plate:#170F36;--accent:#00F0FF;--deck1:#19103B;--deck2:#09051A;--deck-border:#00F0FF}
+[data-ov="ui-futuristic"] .bar,[data-ov="ui-futuristic"] .deck{border-radius:18px!important;border-color:#00F0FF!important;box-shadow:0 0 24px rgba(139,92,246,0.3)!important}
+[data-ov="os-win95"] .bar,[data-ov="os-win95"] .deck{background:#C0C0C0!important;color:#000!important;border:2px outset #FFF!important;border-radius:0!important}
+[data-ov="os-winxp"] .bar,[data-ov="os-winxp"] .deck{background:linear-gradient(180deg,#245EDB,#1941A5)!important;color:#FFF!important;border:2px solid #003399!important}
+[data-ov="os-pipboy"] .bar,[data-ov="os-pipboy"] .deck{background:#051405!important;color:#1AFF40!important;border:2px solid #1AFF40!important}
+[data-ov="app-winamp"] .bar,[data-ov="app-winamp"] .deck{background:#292938!important;color:#00FF00!important;border:2px ridge #6E738B!important;border-radius:0!important}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:500 13px/1.4 var(--font);min-height:100vh;overflow-x:hidden;transition:background-color .18s,color .18s}
+.wrap{max-width:1240px;margin:0 auto;padding:8px 10px;display:flex;flex-direction:column;gap:8px}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:7px 10px}
+button,select,input{font:inherit;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:4px 8px;min-height:32px;cursor:pointer}
+button:hover{filter:brightness(1.14)}
+input[type=range]{padding:0;border:0;background:none;accent-color:var(--accent);min-height:auto}
+input[type=color]{padding:1px;width:36px;height:30px;min-height:30px}
+.brand{font-weight:800;font-size:15.5px;display:flex;align-items:center;gap:6px}.brand i{font-style:normal;color:var(--accent)}
+.chip{font:600 11px var(--mono);padding:3px 8px;border-radius:7px;border:1px solid var(--line);color:var(--mute)}
+.seg{display:flex;flex-wrap:wrap;gap:2px;border:1px solid var(--line);border-radius:10px;padding:2px}
+.seg button,.seg a.nav-pill{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:0;min-height:26px;padding:2px 9px;background:none;color:var(--mute);font-weight:700;font-size:11.5px;border-radius:7px;cursor:pointer}
+.seg button[aria-current="page"],.seg a.nav-pill[aria-current="page"]{background:var(--accent);color:#04121C}
+.deck{display:flex;flex-direction:column;gap:10px;background:linear-gradient(145deg,var(--deck1),var(--deck2));border:2px solid var(--deck-border);border-radius:18px;padding:12px}
+.subcard{background:rgba(0,0,0,0.2);border:1px solid var(--line);border-radius:10px;padding:7px 9px;width:100%;display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.subhead{font:800 10.5px var(--mono);text-transform:uppercase;color:var(--accent);letter-spacing:0.5px;margin-right:4px}
+.swatch-pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:8px;border:2px solid #fff;font:800 12px var(--mono);box-shadow:0 0 12px var(--active-c,#10B981)}
+
+
+/* === COMPLETE 13 UI THEMES (Always override default palette variables cleanly) === */
+:root[data-theme="dark"]{--bg:#07090E!important;--panel:#12141A!important;--line:#262A34!important;--text:#F1F5F9!important;--mute:#94A3B8!important;--plate:#181D2A!important;--deck1:#161B26!important;--deck2:#0C0F17!important;--deck-border:#C5A059!important;color-scheme:dark}
+:root[data-theme="light"]{--bg:#E8EBF0!important;--panel:#F8FAFC!important;--line:#CBD5E1!important;--text:#0F172A!important;--mute:#475569!important;--plate:#CBD5E1!important;--deck1:#F1F5F9!important;--deck2:#E2E8F0!important;--deck-border:#64748B!important;color-scheme:light}
+:root[data-theme="matrix"]{--bg:#010902!important;--panel:#031606!important;--line:#00FF41!important;--text:#00FF41!important;--mute:#22C55E!important;--plate:#042409!important;--accent:#00FF41!important;--deck1:#031A07!important;--deck2:#010802!important;--deck-border:#00FF41!important}
+:root[data-theme="midnight"]{--bg:#020617!important;--panel:#0F172A!important;--line:#1E293B!important;--text:#E2E8F0!important;--mute:#64748B!important;--plate:#1E293B!important;--deck1:#0F172A!important;--deck2:#020617!important;--deck-border:#38BDF8!important}
+:root[data-theme="cyberpunk"]{--bg:#0D0221!important;--panel:#19053B!important;--line:#FF007F!important;--text:#F0ABFC!important;--mute:#C084FC!important;--plate:#2E1065!important;--accent:#00F0FF!important;--deck1:#240046!important;--deck2:#10002B!important;--deck-border:#FF007F!important}
+:root[data-theme="emerald"]{--bg:#021612!important;--panel:#062821!important;--line:#10B981!important;--text:#D1FAE5!important;--mute:#6EE7B7!important;--plate:#114237!important;--accent:#34D399!important;--deck1:#06342B!important;--deck2:#021B16!important;--deck-border:#10B981!important}
+:root[data-theme="crimson"]{--bg:#160408!important;--panel:#280911!important;--line:#F43F5E!important;--text:#FFE4E6!important;--mute:#FDA4AF!important;--plate:#3F101C!important;--accent:#FB7185!important;--deck1:#310B15!important;--deck2:#190409!important;--deck-border:#E11D48!important}
+:root[data-theme="nord"]{--bg:#2E3440!important;--panel:#3B4252!important;--line:#4C566A!important;--text:#ECEFF4!important;--mute:#D8DEE9!important;--plate:#434C5E!important;--accent:#88C0D0!important;--deck1:#3B4252!important;--deck2:#2E3440!important;--deck-border:#81A1C1!important}
+:root[data-theme="solarlight"]{--bg:#FDF6E3!important;--panel:#EEE8D5!important;--line:#D3CBB7!important;--text:#073642!important;--mute:#586E75!important;--plate:#D3CBB7!important;--accent:#B58900!important;--deck1:#EEE8D5!important;--deck2:#FDF6E3!important;--deck-border:#93A1A1!important;color-scheme:light}
+:root[data-theme="solardark"]{--bg:#002B36!important;--panel:#073642!important;--line:#2AA198!important;--text:#EEE8D5!important;--mute:#93A1A1!important;--plate:#0A4452!important;--accent:#2AA198!important;--deck1:#073642!important;--deck2:#00212B!important;--deck-border:#2AA198!important}
+:root[data-theme="mocha"]{--bg:#1E1E2E!important;--panel:#181825!important;--line:#45475A!important;--text:#CDD6F4!important;--mute:#A6ADC8!important;--plate:#313244!important;--accent:#CBA6F7!important;--deck1:#26273B!important;--deck2:#11111B!important;--deck-border:#CBA6F7!important}
+:root[data-theme="contrast"]{--bg:#000000!important;--panel:#0A0A0A!important;--line:#FFFFFF!important;--text:#FFFFFF!important;--mute:#FACC15!important;--plate:#1F1F1F!important;--accent:#FACC15!important;--deck1:#0A0A0A!important;--deck2:#000000!important;--deck-border:#FFFFFF!important}
+
+/* === COMPLETE 23 UI OVERLAYS (Sophisticated, Tech, Futuristic + 20 Hardware/OS Skins) === */
+[data-ov="ui-sophisticated"] .bar{background:linear-gradient(180deg,color-mix(in srgb,var(--panel) 95%,#D4AF37),var(--panel))!important;border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line))!important}
+[data-ov="ui-sophisticated"] .deck{border:2px solid var(--deck-border)!important;box-shadow:0 16px 40px rgba(0,0,0,0.55)!important}
+[data-ov="ui-tech"]{--font:"JetBrains Mono",monospace}
+[data-ov="ui-tech"] .bar,[data-ov="ui-tech"] .deck{border-radius:3px!important;border:1.5px solid #0EA5E9!important;box-shadow:inset 0 0 12px rgba(14,165,233,0.18)!important}
+[data-ov="ui-futuristic"] .bar,[data-ov="ui-futuristic"] .deck{border-radius:18px!important;border:1.5px solid #00F0FF!important;box-shadow:0 0 24px rgba(139,92,246,0.3)!important}
+[data-ov="mech-ibm"] .bar,[data-ov="mech-ibm"] .deck{background:#D6D2C4!important;color:#111!important;border:3px outset #F5F2E8!important;border-radius:4px!important}
+[data-ov="mech-ibm"] button,[data-ov="mech-ibm"] select{background:#EAE6D9!important;color:#111!important;border:2px outset #FFF!important;border-radius:3px!important}
+[data-ov="mech-c64"] .bar,[data-ov="mech-c64"] .deck{background:#96897B!important;color:#F5F0EB!important;border:3px solid #42382F!important;border-radius:8px!important}
+[data-ov="mech-cyber"] .bar,[data-ov="mech-cyber"] .deck{background:rgba(16,4,36,0.92)!important;color:#00F0FF!important;border:2px solid #FF007F!important;box-shadow:0 0 20px rgba(255,0,127,0.35)!important}
+[data-ov="mech-typewriter"] .bar,[data-ov="mech-typewriter"] .deck{background:#1C1612!important;color:#F5E6C8!important;border:3px double #D4AF37!important;border-radius:12px!important}
+[data-ov="mech-arcade"] .bar,[data-ov="mech-arcade"] .deck{background:#141829!important;color:#FACC15!important;border:3px solid #EF4444!important;border-radius:14px!important}
+[data-ov="plug-vst"] .bar,[data-ov="plug-vst"] .deck{background:linear-gradient(180deg,#2C3038,#1E2127)!important;color:#E2E8F0!important;border:2px solid #475569!important;border-radius:6px!important}
+[data-ov="plug-eurorack"] .bar,[data-ov="plug-eurorack"] .deck{background:#D4D4D8!important;color:#18181B!important;border:3px solid #52525B!important;border-radius:2px!important}
+[data-ov="plug-mpc"] .bar,[data-ov="plug-mpc"] .deck{background:#DCD7C9!important;color:#1F2937!important;border:4px solid #374151!important;border-radius:6px!important}
+[data-ov="plug-dmx"] .bar,[data-ov="plug-dmx"] .deck{background:#111318!important;color:#FBBF24!important;border:2px solid #F59E0B!important;border-radius:4px!important}
+[data-ov="plug-davinci"] .bar,[data-ov="plug-davinci"] .deck{background:#16161A!important;color:#E4E4E7!important;border:1px solid #3F3F46!important;border-radius:8px!important}
+[data-ov="app-winamp"] .bar,[data-ov="app-winamp"] .deck{background:#292938!important;color:#00FF00!important;border:2px ridge #6E738B!important;border-radius:0!important}
+[data-ov="app-ps3"] .bar,[data-ov="app-ps3"] .deck{background:#D4D0C8!important;color:#000!important;border:2px outset #FFF!important;border-radius:0!important}
+[data-ov="app-lotus"] .bar,[data-ov="app-lotus"] .deck{background:#000080!important;color:#FFFF00!important;border:2px double #00FFFF!important;border-radius:0!important}
+[data-ov="app-soundforge"] .bar,[data-ov="app-soundforge"] .deck{background:#1A2226!important;color:#00FF66!important;border:2px solid #00AA44!important;border-radius:2px!important}
+[data-ov="app-hypercard"] .bar,[data-ov="app-hypercard"] .deck{background:#FFFFFF!important;color:#000000!important;border:2px solid #000000!important;border-radius:0!important;box-shadow:4px 4px 0 #000!important}
+[data-ov="os-win95"] .bar,[data-ov="os-win95"] .deck{background:#C0C0C0!important;color:#000!important;border:2px outset #FFF!important;border-radius:0!important}
+[data-ov="os-win95"] button,[data-ov="os-win95"] select{background:#C0C0C0!important;color:#000!important;border:2px outset #FFF!important;border-radius:0!important}
+[data-ov="os-winxp"] .bar,[data-ov="os-winxp"] .deck{background:linear-gradient(180deg,#245EDB,#1941A5)!important;color:#FFF!important;border:2px solid #003399!important;border-radius:8px!important}
+[data-ov="os-mac9"] .bar,[data-ov="os-mac9"] .deck{background:#DDDDDD!important;color:#000!important;border:2px outset #FFF!important;border-radius:6px!important}
+[data-ov="os-amiga"] .bar,[data-ov="os-amiga"] .deck{background:#0055AA!important;color:#FFFFFF!important;border:2px solid #FF8800!important;border-radius:0!important}
+[data-ov="os-pipboy"] .bar,[data-ov="os-pipboy"] .deck{background:#051405!important;color:#1AFF40!important;border:2px solid #1AFF40!important;border-radius:6px!important}
+
+</style>
+<style>
+*:focus-visible {
+  outline: 3px solid var(--accent, #D4AF37) !important;
+  outline-offset: 2px !important;
+}
+.dj-console-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+@media(min-width: 1020px) {
+  .dj-console-grid { grid-template-columns: 1fr 340px 1fr; }
+}
+.turntable-card {
+  background: linear-gradient(160deg, var(--deck1, #161B26), var(--deck2, #0C0F17));
+  border: 2px solid var(--tc, var(--accent));
+  border-radius: 16px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 14px 36px rgba(0,0,0,0.65);
+}
+.platter-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 4px;
+}
+.platter-cv {
+  width: min(250px, 68vw);
+  height: min(250px, 68vw);
+  border-radius: 50%;
+  cursor: grab;
+  touch-action: none;
+  box-shadow: 0 0 28px rgba(0,0,0,0.85), 0 0 16px var(--tc, rgba(212,175,55,0.3));
+}
+.platter-cv:active { cursor: grabbing; }
+.mixer-center-card {
+  background: var(--panel);
+  border: 2px solid var(--deck-border, #C5A059);
+  border-radius: 16px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+}
+.kill-btn {
+  padding: 4px 8px;
+  font: 800 10px var(--mono);
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  cursor: pointer;
+}
+.kill-btn[aria-pressed="true"] {
+  background: #DC2626 !important;
+  color: #FFF !important;
+  border-color: #FFF !important;
+}
+.perf-pads-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 7px;
+}
+.perf-pad {
+  min-height: 56px;
+  padding: 7px 9px;
+  border-radius: 10px;
+  border: 2px solid var(--ppc, var(--accent));
+  background: rgba(10, 14, 24, 0.9);
+  color: #FFF;
+  font: 800 11px var(--mono);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.12s;
+}
+.perf-pad:active, .perf-pad.pad-lit {
+  transform: scale(0.96);
+  background: color-mix(in srgb, var(--ppc, var(--accent)) 35%, #090D16);
+  box-shadow: 0 0 20px var(--ppc, var(--accent));
+  border-color: #FFF;
+}
+.crossfader-box {
+  background: rgba(0, 0, 0, 0.45);
+  border: 1.5px solid var(--accent);
+  border-radius: 12px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+#crossfaderIn {
+  width: 100%;
+  height: 22px;
+  cursor: ew-resize;
+}
+body.deck-fs header, body.deck-fs #sharedCustPanel {
+  display: none !important;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- SHARED FOREFRONTHAWK.COM 7-APP TOP SUBDOMAIN BANNER -->
+  <header class="bar" style="justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <a href="https://forefronthawk.com" class="brand" style="text-decoration:none;color:var(--text)">🦅 Forefront<i>Hawk</i></a>
+      <span class="chip">HawkDeck DJ Sound &amp; Light Console</span>
+      <nav class="seg" id="suiteNavSeg" aria-label="ForefrontHawk Subdomain Navigation">
+        <a href="https://chroma.forefronthawk.com" data-sub="https://chroma.forefronthawk.com" class="sub-link nav-pill">🎹 Chroma</a>
+        <a href="https://draw.forefronthawk.com" data-sub="https://draw.forefronthawk.com" class="sub-link nav-pill">💡 HawkDraw</a>
+        <a href="https://shine.forefronthawk.com" data-sub="https://shine.forefronthawk.com" class="sub-link nav-pill">⚡ HawkShine</a>
+        <a href="https://rgb.forefronthawk.com" data-sub="https://rgb.forefronthawk.com" class="sub-link nav-pill">🎞️ HawkRGB</a>
+        <a href="https://calls.forefronthawk.com" data-sub="https://calls.forefronthawk.com" class="sub-link nav-pill">🎙️ HawkCalls</a>
+        <a href="https://flies.forefronthawk.com" data-sub="https://flies.forefronthawk.com" class="sub-link nav-pill">🦅 HawkFlies</a>
+        <a href="https://globe.forefronthawk.com" data-sub="https://globe.forefronthawk.com" class="sub-link nav-pill">🌍 HawkGlobe</a>
+        <a href="https://deck.forefronthawk.com" data-sub="https://deck.forefronthawk.com" class="sub-link nav-pill" aria-current="page">🎚️ HawkDeck</a>
+      </nav>
+    </div>
+    <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+      <span id="chromaLiveSwatch" class="swatch-pill" style="background:#10B981;color:#080B10">#10B981 (GRN)</span>
+      <input id="mobilePasteColorIn" type="text" placeholder="Paste #HEX" value="#10B981" style="width:88px;font:700 11.5px var(--mono);text-align:center">
+      <button id="pasteFromClipBtn" type="button" class="chip" style="cursor:pointer;border-color:var(--accent);color:var(--accent);font-weight:700">📋 Paste Color</button>
+      <button id="openChromaPopupBtn" type="button" class="chip" style="cursor:pointer">🪟 Pair Chroma</button>
+      <button id="toggleSharedCustBtn" type="button">🛠️ UI &amp; Skin</button>
+    </div>
+  </header>
+
+  <section id="sharedCustPanel" class="bar" hidden>
+    <div class="subcard">
+      <span class="subhead">Shared forefronthawk.com UI (Travels Across All Sites)</span>
+      <label>🎛️ Overlay <select id="sharedOverlaySel"></select></label>
+      <label>UI Theme
+        <select id="sharedThemeSel">
+          <option value="dark">Obsidian Dark</option>
+          <option value="light">Studio Daylight</option>
+          <option value="matrix">Matrix Digital Code</option>
+          <option value="midnight">Midnight OLED</option>
+          <option value="cyberpunk">Cyberpunk Neon</option>
+          <option value="emerald">Emerald Matrix</option>
+          <option value="crimson">Crimson Forged</option>
+          <option value="nord">Nordic Frost</option>
+          <option value="solarlight">Solarized Light</option>
+          <option value="solardark">Solarized Dark</option>
+          <option value="mocha">Catppuccin Mocha</option>
+          <option value="contrast">High-Contrast Pro</option>
+          <option value="custom_live">★ Custom Colors</option>
+        </select>
+      </label>
+      <label>Font
+        <select id="sharedFontSel">
+          <option value="system">System Sans</option>
+          <option value="calibri">Calibri</option>
+          <option value="arial">Arial</option>
+          <option value="inter">Inter Studio</option>
+          <option value="serif">Serif</option>
+          <option value="mono">JetBrains Mono</option>
+          <option value="space">Space Grotesk</option>
+          <option value="orbitron">Orbitron Cyber</option>
+          <option value="pixel">8-Bit Pixel</option>
+        </select>
+      </label>
+      <label>BG <input type="color" id="cBgIn" value="#090B10"></label>
+      <label>Panel <input type="color" id="cPanelIn" value="#121620"></label>
+      <label>Text <input type="color" id="cTextIn" value="#F8FAFC"></label>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- TOP INTEGRATED SOUND + 3D STAGE LIGHTS & PYRO VISUALIZER BAR          -->
+  <!-- ===================================================================== -->
+  <section class="deck" style="padding:8px;gap:6px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+        <span class="subhead">⚡ Live DJ Sound + Stage Light-Show Visualizer (Synced w/ HawkShine &amp; HawkRGB)</span>
+        <span id="deckStatusHud" class="chip" style="color:#34D399">🎧 Dual Decks Ready • Drag Vinyl Platters to Scratch!</span>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <button type="button" id="combineSongsMashupBtn" style="background:linear-gradient(135deg,#D4AF37,#059669);color:#090C12;font-weight:900;padding:6px 12px">
+          🔗 Combine Songs (Auto-Mashup Deck A Bass + Deck B Lead)
+        </button>
+        <button type="button" id="syncBpmBtn" style="background:#0284C7;color:#fff;font-weight:800">🧲 Beat-Sync BPM</button>
+        <button type="button" id="deckFsToggleBtn" class="chip" style="cursor:pointer;border-color:var(--accent);color:var(--accent);font-weight:800">⛶ Full Console</button>
+      </div>
+    </div>
+
+    <!-- Dual Stacked Beat-Grid Waveform + Live 3D Lasers/Pyro Stage Strip -->
+    <canvas id="deckLightStageCanvas" width="1180" height="150" style="width:100%;height:auto;background:#03060E;border-radius:10px;border:1px solid var(--line);display:block"></canvas>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- 3-COLUMN DJ PERFORMANCE DECK: DECK A | CENTER MIXER & MASHUP | DECK B -->
+  <!-- ===================================================================== -->
+  <main class="dj-console-grid">
+
+    <!-- LEFT: TURNTABLE DECK A (CYAN / GOLD) -->
+    <section class="turntable-card" style="--tc:#38BDF8">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
+        <span class="subhead" style="color:#38BDF8;font-size:12px">💿 DECK A (BASS &amp; ELECTRO GROOVE)</span>
+        <span id="deckABpmBadge" class="chip" style="color:#38BDF8;font-weight:800">130.0 BPM</span>
+      </div>
+
+      <div style="display:flex;gap:5px;flex-wrap:wrap">
+        <select id="deckATrackSel" style="flex:1;font-weight:700">
+          <option value="benassi" selected>🔥 A1: Benassi "Satisfaction" Heavy Saw-Bass (130 BPM)</option>
+          <option value="wobble">⚡ A2: Dubstep Filthy Wobble Drop (130 BPM)</option>
+          <option value="house">🥁 A3: Ibiza 4x4 Tech-House Club Groove (130 BPM)</option>
+        </select>
+        <button type="button" id="uploadDeckABtn" class="chip" style="cursor:pointer">📂 Load Audio</button>
+        <input type="file" id="uploadDeckAIn" accept="audio/*" hidden>
+      </div>
+
+      <!-- Interactive Spinning Vinyl Platter A (Drag to Scratch!) -->
+      <div class="platter-wrap">
+        <canvas id="platterCanvasA" class="platter-cv" width="280" height="280" title="Grab and drag vinyl forward/backward to scratch Deck A!"></canvas>
+      </div>
+
+      <!-- Deck A Transport & Instant Scratch Macros -->
+      <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:center">
+        <button type="button" id="playDeckABtn" style="background:#0284C7;color:#fff;font-weight:800;flex:1">▶ Play Deck A</button>
+        <button type="button" id="scratchBabyABtn" class="chip" style="cursor:pointer;border-color:#38BDF8;color:#38BDF8;font-weight:800">💿 Baby Scratch</button>
+        <button type="button" id="scratchTransABtn" class="chip" style="cursor:pointer;border-color:#FACC15;color:#FACC15;font-weight:800">⚡ Transformer Cut</button>
+        <button type="button" id="backspinABtn" class="chip" style="cursor:pointer">🌀 Backspin</button>
+      </div>
+
+      <!-- Deck A Pitch Tempo & Filter -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font:700 10.5px var(--mono)">
+        <label>Pitch Speed <input type="range" id="pitchRangeA" min="84" max="116" value="100" style="width:75px"><b id="pitchLblA">0%</b></label>
+        <label>Filter <input type="range" id="filterRangeA" min="150" max="12000" value="9500" style="width:75px"><b id="filterLblA">Open</b></label>
+      </div>
+    </section>
+
+    <!-- CENTER: 2-CHANNEL DJ MIXER, STEM KILL ISOLATORS, CROSSFADER & MASHUP RECORDER -->
+    <section class="mixer-center-card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="subhead">🎚️ DJ MASHUP MIXER &amp; ISOLATOR</span>
+        <span class="chip" style="color:#FACC15">2-DECK COMBINER</span>
+      </div>
+
+      <!-- Dual Channel EQ & Stem Kill Columns -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;background:rgba(0,0,0,0.3);padding:8px;border-radius:10px;border:1px solid var(--line)">
+        <!-- Deck A EQ Strip -->
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <b style="color:#38BDF8;font:800 11px var(--mono);text-align:center">DECK A EQ / STEMS</b>
+          <div style="display:flex;align-items:center;justify-content:space-between;font:700 10px var(--mono)">
+            <button type="button" class="kill-btn" id="killHighA" aria-pressed="false">HI</button>
+            <input type="range" id="eqHighA" min="-24" max="12" value="0" style="width:72px">
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font:700 10px var(--mono)">
+            <button type="button" class="kill-btn" id="killMidA" aria-pressed="false">MID</button>
+            <input type="range" id="eqMidA" min="-24" max="12" value="0" style="width:72px">
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font:700 10px var(--mono)">
+            <button type="button" class="kill-btn" id="killLowA" aria-pressed="false">LOW</button>
+            <input type="range" id="eqLowA" min="-24" max="12" value="3" style="width:72px">
+          </div>
+          <label style="font:700 10px var(--mono);justify-content:space-between">Vol A <input type="range" id="volRangeA" min="0" max="120" value="95" style="width:75px"></label>
+        </div>
+
+        <!-- Deck B EQ Strip -->
+        <div style="display:flex;flex-direction:column;gap:5px;border-left:1px solid var(--line);padding-left:8px">
+          <b style="color:#EC4899;font:800 11px var(--mono);text-align:center">DECK B EQ / STEMS</b>
+          <div style="display:flex;align-items:center;justify-content:space-between;font:700 10px var(--mono)">
+            <button type="button" class="kill-btn" id="killHighB" aria-pressed="false">HI</button>
+            <input type="range" id="eqHighB" min="-24" max="12" value="2" style="width:72px">
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font:700 10px var(--mono)">
+            <button type="button" class="kill-btn" id="killMidB" aria-pressed="false">MID</button>
+            <input type="range" id="eqMidB" min="-24" max="12" value="2" style="width:72px">
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font:700 10px var(--mono)">
+            <button type="button" class="kill-btn" id="killLowB" aria-pressed="false">LOW</button>
+            <input type="range" id="eqLowB" min="-24" max="12" value="0" style="width:72px">
+          </div>
+          <label style="font:700 10px var(--mono);justify-content:space-between">Vol B <input type="range" id="volRangeB" min="0" max="120" value="95" style="width:75px"></label>
+        </div>
+      </div>
+
+      <!-- Song Combiner / Mashup Quick Presets -->
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font:800 10px var(--mono);color:var(--mute)">⚡ 1-CLICK SONG COMBINER MODES:</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+          <button type="button" id="mashupA_Bass_B_Top" class="chip" style="cursor:pointer;border-color:#34D399;color:#34D399;font-weight:800">🔗 A Bass + B Lead</button>
+          <button type="button" id="mashupB_Bass_A_Top" class="chip" style="cursor:pointer;border-color:#A855F7;color:#A855F7;font-weight:800">🔗 B Bass + A Lead</button>
+        </div>
+      </div>
+
+      <!-- Master Crossfader -->
+      <div class="crossfader-box">
+        <div style="display:flex;justify-content:space-between;font:800 10.5px var(--mono)">
+          <span style="color:#38BDF8">◄ DECK A</span>
+          <span id="xfaderStatusLbl" style="color:var(--accent)">CENTER BLEND (A+B)</span>
+          <span style="color:#EC4899">DECK B ►</span>
+        </div>
+        <input type="range" id="crossfaderIn" min="-100" max="100" value="0">
+      </div>
+
+      <!-- Export Combined Mashup (.ZIP) & Inline Audio Preview -->
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <button type="button" id="exportMashupZipBtn" style="background:linear-gradient(135deg,#D4AF37,#059669);color:#090C12;font-weight:900;padding:7px">
+          💾 Render &amp; Download Combined Mashup (.ZIP)
+        </button>
+        <audio id="mashupAudioPreview" controls style="width:100%;height:30px"></audio>
+      </div>
+    </section>
+
+    <!-- RIGHT: TURNTABLE DECK B (MAGENTA / VIOLET) -->
+    <section class="turntable-card" style="--tc:#EC4899">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
+        <span class="subhead" style="color:#EC4899;font-size:12px">💿 DECK B (EDM LEAD, VOCALS &amp; ACID)</span>
+        <span id="deckBBpmBadge" class="chip" style="color:#EC4899;font-weight:800">130.0 BPM</span>
+      </div>
+
+      <div style="display:flex;gap:5px;flex-wrap:wrap">
+        <select id="deckBTrackSel" style="flex:1;font-weight:700">
+          <option value="supersaw" selected>🎤 B1: EDM Supersaw &amp; Vocal Chop Hook (130 BPM)</option>
+          <option value="acid">🌀 B2: Acid 303 Warehouse Squelch Lead (130 BPM)</option>
+          <option value="wobble">🔊 B3: Dubstep High-Octave Screech &amp; Sub (130 BPM)</option>
+        </select>
+        <button type="button" id="uploadDeckBBtn" class="chip" style="cursor:pointer">📂 Load Audio</button>
+        <input type="file" id="uploadDeckBIn" accept="audio/*" hidden>
+      </div>
+
+      <!-- Interactive Spinning Vinyl Platter B (Drag to Scratch!) -->
+      <div class="platter-wrap">
+        <canvas id="platterCanvasB" class="platter-cv" width="280" height="280" title="Grab and drag vinyl forward/backward to scratch Deck B!"></canvas>
+      </div>
+
+      <!-- Deck B Transport & Instant Scratch Macros -->
+      <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:center">
+        <button type="button" id="playDeckBBtn" style="background:#DB2777;color:#fff;font-weight:800;flex:1">▶ Play Deck B</button>
+        <button type="button" id="scratchBabyBBtn" class="chip" style="cursor:pointer;border-color:#EC4899;color:#EC4899;font-weight:800">💿 Baby Scratch</button>
+        <button type="button" id="scratchTransBBtn" class="chip" style="cursor:pointer;border-color:#FACC15;color:#FACC15;font-weight:800">⚡ Transformer Cut</button>
+        <button type="button" id="backspinBBtn" class="chip" style="cursor:pointer">🌀 Backspin</button>
+      </div>
+
+      <!-- Deck B Pitch Tempo & Filter -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font:700 10.5px var(--mono)">
+        <label>Pitch Speed <input type="range" id="pitchRangeB" min="84" max="116" value="100" style="width:75px"><b id="pitchLblB">0%</b></label>
+        <label>Filter <input type="range" id="filterRangeB" min="150" max="12000" value="9500" style="width:75px"><b id="filterLblB">Open</b></label>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- 8 LIVE SOUND + DMX / LASER / PYRO PERFORMANCE PADS                    -->
+  <!-- ===================================================================== -->
+  <section class="deck" style="gap:8px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+      <span class="subhead">🎛️ 8 Live Sound FX + Stage Light-Show Performance Pads (Triggers Audio FX &amp; Broadcasts Cues to HawkShine / HawkRGB!)</span>
+      <span class="chip">Hotkeys: 1 – 8</span>
+    </div>
+
+    <div class="perf-pads-grid" id="perfPadsGrid">
+      <button type="button" class="perf-pad" data-pad="0" style="--ppc:#EF4444">
+        <span>[1] 🔥 PYRO FLAME + SUB DROP</span>
+        <small style="color:#FCA5A5">Fires stage flames + 50Hz sub boom</small>
+      </button>
+      <button type="button" class="perf-pad" data-pad="1" style="--ppc:#FACC15">
+        <span>[2] ✨ SPARKULARS + RISER</span>
+        <small style="color:#FEF08A">Gold spark fountains + synth sweep</small>
+      </button>
+      <button type="button" class="perf-pad" data-pad="2" style="--ppc:#38BDF8">
+        <span>[3] 💨 CO2 CRYO + NOISE JET</span>
+        <small style="color:#BAE6FD">High-pressure cryo + club noise</small>
+      </button>
+      <button type="button" class="perf-pad" data-pad="3" style="--ppc:#FFFFFF">
+        <span>[4] ⚡ STROBE + 1/16 ROLL</span>
+        <small style="color:#E2E8F0">Blinder strobe + beat stutter</small>
+      </button>
+      <button type="button" class="perf-pad" data-pad="4" style="--ppc:#00F5D4">
+        <span>[5] 🌀 3D LASER Z-TUNNEL</span>
+        <small style="color:#99F6E4">Vortex laser cone + laser zap</small>
+      </button>
+      <button type="button" class="perf-pad" data-pad="5" style="--ppc:#EC4899">
+        <span>[6] 💿 AUTO SCRATCH COMBO</span>
+        <small style="color:#FBCFE8">Transformer vinyl cut + color flip</small>
+      </button>
+      <button type="button" class="perf-pad" data-pad="6" style="--ppc:#A855F7">
+        <span>[7] 🎆 AERIAL PYRO + HORN</span>
+        <small style="color:#E9D5FF">Stadium starburst + festival horn</small>
+      </button>
+      <button type="button" class="perf-pad" data-pad="7" style="--ppc:#10B981">
+        <span>[8] 🦅 SOVEREIGN FINALE</span>
+        <small style="color:#A7F3D0">All lasers, flames, sparks &amp; drop</small>
+      </button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+var FONTS={
+system:'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif',
+calibri:'Calibri,"Segoe UI",Candara,sans-serif',
+arial:'Arial,"Helvetica Neue",Helvetica,sans-serif',
+inter:'"Inter",system-ui,sans-serif',
+serif:'Georgia,"Times New Roman",Times,serif',
+mono:'"JetBrains Mono",Consolas,ui-monospace,monospace',
+space:'"Space Grotesk",system-ui,sans-serif',
+orbitron:'"Orbitron",system-ui,sans-serif',
+pixel:'"Press Start 2P",ui-monospace,monospace'
+};
+var ACC={sky:"#38BDF8",gold:"#D4AF37",green:"#34D399",amber:"#FBBF24",rose:"#FB7185",violet:"#A78BFA"};
+var OVERLAY_LIST=[
+["ui-sophisticated","★ Sophisticated (ForefrontHawk)"],
+["ui-tech","★ Tech (CAD Telemetry)"],
+["ui-futuristic","★ Futuristic (Holo-Glass)"],
+["none","0. Classic UI"],["mech-ibm","1. IBM Model M"],["mech-c64","2. Commodore 64"],
+["mech-cyber","3. Cyber Neon"],["mech-typewriter","4. Typewriter"],["mech-arcade","5. Arcade Sanwa"],
+["plug-vst","6. VST Rack"],["plug-eurorack","7. Eurorack"],["plug-mpc","8. Akai MPC"],
+["plug-dmx","9. GrandMA DMX"],["plug-davinci","10. DaVinci Panel"],["app-winamp","11. Winamp 2.x"],
+["app-ps3","12. Photoshop 3"],["app-lotus","13. Lotus 1-2-3"],["app-soundforge","14. FastTracker"],
+["app-hypercard","15. HyperCard"],["os-win95","16. Windows 95"],["os-winxp","17. Windows XP"],
+["os-mac9","18. Mac OS 9"],["os-amiga","19. AmigaOS 1.3"],["os-pipboy","20. CRT Pip-Boy"]
+];
+var UI_STATE={
+mode:"dark",overlay:"ui-sophisticated",font:"system",accent:"gold",
+cBg:"#090B10",cPanel:"#121620",cText:"#F8FAFC",cPlate:"#181D2A",
+activeColor:"#10B981",activeLabel:"GRN"
+};
+var suiteChan=null,chromaChan=null;
+try{
+if(typeof BroadcastChannel!=="undefined"){
+suiteChan=new BroadcastChannel("forefronthawk_suite_bus");
+chromaChan=new BroadcastChannel("hawkchroma_2x10_bus");
+}
+}catch(e){}
+var chromaPopupWin=null;
+function readRootDomainCookie(){
+try{
+var m=document.cookie.match(/(?:^|;\s*)ffh_ui=([^;]+)/);
+if(m&&m[1])return JSON.parse(decodeURIComponent(m[1]));
+}catch(e){}
+return null;
+}
+function writeRootDomainCookie(obj){
+try{
+var val=encodeURIComponent(JSON.stringify(obj));
+document.cookie="ffh_ui="+val+"; domain=.forefronthawk.com; path=/; max-age=31536000; SameSite=Lax";
+document.cookie="ffh_ui="+val+"; path=/; max-age=31536000; SameSite=Lax";
+}catch(e){}
+}
+function readUrlHashState(){
+try{
+if(location.hash&&location.hash.indexOf("ffh=")>-1){
+var part=location.hash.split("ffh=")[1].split("&")[0];
+return JSON.parse(decodeURIComponent(part));
+}
+}catch(e){}
+return null;
+}
+function updateSubdomainBannerLinks(){
+try{
+writeRootDomainCookie(UI_STATE);
+document.querySelectorAll("a.sub-link").forEach(function(a){
+var base=a.dataset.sub||a.getAttribute("href").split("#")[0];
+a.href=base;
+a.onclick=function(){writeRootDomainCookie(UI_STATE)};
+});
+}catch(e){}
+}
+function loadSharedUi(){
+try{
+var fromHash=readUrlHashState();
+var fromCookie=readRootDomainCookie();
+var fromLs=JSON.parse(localStorage.getItem("forefronthawk_shared_ui")||localStorage.getItem("hawkchroma_v4")||"null");
+var sv=fromHash||fromCookie||fromLs;
+if(sv){
+if(sv.mode)UI_STATE.mode=sv.mode;
+if(sv.overlay)UI_STATE.overlay=sv.overlay;
+if(sv.font)UI_STATE.font=sv.font;
+if(sv.accent)UI_STATE.accent=sv.accent;
+if(sv.cBg)UI_STATE.cBg=sv.cBg;
+if(sv.cPanel)UI_STATE.cPanel=sv.cPanel;
+if(sv.cText)UI_STATE.cText=sv.cText;
+if(sv.cPlate)UI_STATE.cPlate=sv.cPlate;
+if(sv.activeColor||sv.shown||sv.hex)UI_STATE.activeColor=sv.activeColor||sv.shown||sv.hex;
+if(fromHash)writeRootDomainCookie(UI_STATE);
+}
+}catch(e){}
+applySharedUiToDom();
+updateSubdomainBannerLinks();
+}
+function saveAndBroadcastUi(broadcast){
+try{
+localStorage.setItem("forefronthawk_shared_ui",JSON.stringify(UI_STATE));
+writeRootDomainCookie(UI_STATE);
+updateSubdomainBannerLinks();
+var hc=JSON.parse(localStorage.getItem("hawkchroma_v4")||"{}");
+hc.mode=UI_STATE.mode;hc.overlay=UI_STATE.overlay;hc.font=UI_STATE.font;
+hc.cBg=UI_STATE.cBg;hc.cPanel=UI_STATE.cPanel;hc.cText=UI_STATE.cText;hc.cPlate=UI_STATE.cPlate;
+hc.shown=UI_STATE.activeColor;hc.hex=UI_STATE.activeColor;
+localStorage.setItem("hawkchroma_v4",JSON.stringify(hc));
+}catch(e){}
+applySharedUiToDom();
+if(broadcast){
+if(suiteChan){try{suiteChan.postMessage({type:"FFH_UI_SYNC",ui:UI_STATE})}catch(e){}}
+if(window.opener){try{window.opener.postMessage({type:"FFH_UI_SYNC",ui:UI_STATE},"*")}catch(e){}}
+if(chromaPopupWin&&!chromaPopupWin.closed){try{chromaPopupWin.postMessage({type:"FFH_UI_SYNC",ui:UI_STATE},"*")}catch(e){}}
+}
+}
+function applySharedUiToDom(){
+var r=document.documentElement;
+r.setAttribute("data-theme",UI_STATE.mode||"dark");
+if(UI_STATE.overlay&&UI_STATE.overlay!=="none")r.setAttribute("data-ov",UI_STATE.overlay);
+else r.removeAttribute("data-ov");
+r.style.setProperty("--font",FONTS[UI_STATE.font]||FONTS.system);
+r.style.setProperty("--accent",ACC[UI_STATE.accent]||"#D4AF37");
+if(UI_STATE.mode==="custom_live"){
+r.style.setProperty("--bg",UI_STATE.cBg);
+r.style.setProperty("--panel",UI_STATE.cPanel);
+r.style.setProperty("--text",UI_STATE.cText);
+r.style.setProperty("--plate",UI_STATE.cPlate);
+}else{
+r.style.removeProperty("--bg");r.style.removeProperty("--panel");
+r.style.removeProperty("--text");r.style.removeProperty("--plate");
+}
+r.style.setProperty("--active-c",UI_STATE.activeColor);
+var sw=document.getElementById("chromaLiveSwatch");
+if(sw){
+sw.style.background=UI_STATE.activeColor;
+sw.textContent=UI_STATE.activeColor+" ("+UI_STATE.activeLabel+")";
+}
+if(document.getElementById("sharedOverlaySel"))document.getElementById("sharedOverlaySel").value=UI_STATE.overlay;
+if(document.getElementById("sharedThemeSel"))document.getElementById("sharedThemeSel").value=UI_STATE.mode;
+if(document.getElementById("sharedFontSel"))document.getElementById("sharedFontSel").value=UI_STATE.font;
+if(typeof onChromaColorReceived==="function")onChromaColorReceived(UI_STATE.activeColor,UI_STATE.activeLabel);
+}
+function initSharedCustomizerBar(){
+var popBtn=document.getElementById("openChromaPopupBtn");
+if(popBtn){
+popBtn.onclick=function(){
+var payload=encodeURIComponent(JSON.stringify(UI_STATE));
+writeRootDomainCookie(UI_STATE);
+chromaPopupWin=window.open("https://chroma.forefronthawk.com","HawkChromaCompanion","width=520,height=760");
+};
+}
+window.addEventListener("message",function(e){
+if(!e.data)return;
+if(e.data.type==="FFH_UI_SYNC"&&e.data.ui){
+Object.assign(UI_STATE,e.data.ui);
+saveAndBroadcastUi(false);
+}else if(e.data.hex){
+UI_STATE.activeColor=e.data.hex.toUpperCase();
+UI_STATE.activeLabel=e.data.label||"CHROMA";
+saveAndBroadcastUi(false);
+}
+});
+var lastCookieJson="";
+setInterval(function(){
+var ck=readRootDomainCookie();
+if(ck){
+var j=JSON.stringify(ck);
+if(j!==lastCookieJson){
+lastCookieJson=j;
+Object.assign(UI_STATE,ck);
+applySharedUiToDom();
+}
+}
+},800);
+var ovSel=document.getElementById("sharedOverlaySel");
+if(ovSel&&!ovSel.options.length){
+OVERLAY_LIST.forEach(function(o){
+var op=document.createElement("option");op.value=o[0];op.textContent=o[1];ovSel.appendChild(op);
+});
+ovSel.onchange=function(){UI_STATE.overlay=this.value;saveAndBroadcastUi(true)};
+}
+var thSel=document.getElementById("sharedThemeSel");
+if(thSel){thSel.onchange=function(){UI_STATE.mode=this.value;saveAndBroadcastUi(true)}}
+var fnSel=document.getElementById("sharedFontSel");
+if(fnSel){fnSel.onchange=function(){UI_STATE.font=this.value;saveAndBroadcastUi(true)}}
+var custBtn=document.getElementById("toggleSharedCustBtn");
+if(custBtn){
+custBtn.onclick=function(){
+var p=document.getElementById("sharedCustPanel");
+if(p)p.hidden=!p.hidden;
+};
+}
+["cBgIn","cPanelIn","cTextIn"].forEach(function(id){
+var el=document.getElementById(id);
+if(el)el.oninput=function(){
+UI_STATE.cBg=document.getElementById("cBgIn").value;
+UI_STATE.cPanel=document.getElementById("cPanelIn").value;
+UI_STATE.cText=document.getElementById("cTextIn").value;
+UI_STATE.mode="custom_live";
+saveAndBroadcastUi(true);
+};
+});
+}
+window.addEventListener("focus",function(){if(typeof loadSharedUi==="function")loadSharedUi()});
+document.addEventListener("visibilitychange",function(){if(!document.hidden&&typeof loadSharedUi==="function")loadSharedUi()});
+window.addEventListener("storage",function(e){
+if(e.key==="forefronthawk_shared_ui"||e.key==="hawkchroma_v4")loadSharedUi();
+});
+if(suiteChan){
+suiteChan.onmessage=function(e){
+if(e.data&&e.data.ui){
+Object.assign(UI_STATE,e.data.ui);
+applySharedUiToDom();
+}
+};
+}
+if(chromaChan){
+chromaChan.onmessage=function(e){
+if(e.data&&e.data.hex){
+UI_STATE.activeColor=e.data.hex.toUpperCase();
+UI_STATE.activeLabel=e.data.label||"CHROMA";
+saveAndBroadcastUi(false);
+}
+};
+}
+var stopCycleIdx = 0;
+
+
+// ============================================================================
+// HAWKFLIES AERIAL GOOGLE MAPS & SATELLITE PASSIVE FLIGHT ENGINE
+// ============================================================================
+
+
+
+// ============================================================================
+// HAWKGLOBE 3D SPHERICAL EARTH, CONTINENTAL DRIFT -> BIG BANG, SOLAR SYSTEM
+// & 4 CATACLYSM SIMULATOR ENGINE
+// ============================================================================
+
+
+
+// ============================================================================
+// HAWKDECK DUAL-TURNTABLE VINYL SCRATCHING, SONG COMBINER & LIGHT CONTROLLER
+// ============================================================================
+
+var djCtx = null, djMasterGain = null;
+
+function makeBufferFromF32(f32, sr){
+  sr = sr || (djCtx ? djCtx.sampleRate : 44100);
+  if(djCtx){
+    var b = djCtx.createBuffer(1, f32.length, sr);
+    b.getChannelData(0).set(f32);
+    return b;
+  }
+  return {
+    sampleRate: sr, length: f32.length, duration: f32.length / sr, numberOfChannels: 1, _raw: f32,
+    getChannelData: function(){ return this._raw; }
+  };
+}
+
+function reverseFloat32(f32){
+  var rev = new Float32Array(f32.length);
+  for(var i=0, n=f32.length; i<n; i++) rev[i] = f32[n - 1 - i];
+  return rev;
+}
+
+// Synthesize Pro 2-Bar 130 BPM Club Tracks (Benassi Electro Saw-Bass, Dubstep Wobble, Tech-House, EDM Supersaw, Acid 303)
+function generateClubTrackFloat32(style, sr){
+  sr = sr || 44100;
+  var bpm = 130;
+  var beatSec = 60 / bpm;
+  var dur = beatSec * 8; // Exact 8-beat loop (3.6923s)
+  var len = Math.floor(sr * dur);
+  var out = new Float32Array(len);
+
+  var riff = [
+    [0.00, 0.45, 35], [0.50, 0.22, 35], [0.75, 0.45, 35],
+    [1.25, 0.22, 35], [1.50, 0.45, 35],
+    [2.00, 0.45, 35], [2.50, 0.22, 35], [2.75, 0.45, 37],
+    [3.25, 0.35, 38], [3.625, 0.35, 37],
+    [4.00, 0.45, 35], [4.50, 0.22, 35], [4.75, 0.45, 37],
+    [5.25, 0.45, 38], [5.75, 0.45, 40],
+    [6.25, 0.35, 38], [6.625, 0.35, 37], [7.00, 0.45, 33], [7.50, 0.45, 34]
+  ];
+
+  var svfLow = 0, svfBand = 0, p1 = 0, p2 = 0, pSub = 0;
+
+  for(var i=0; i<len; i++){
+    var t = i / sr;
+    var beatFloat = t / beatSec;
+    var beatInLoop = beatFloat % 8;
+    var bIdx = Math.floor(beatInLoop);
+    var bT = (beatInLoop - bIdx) * beatSec;
+
+    // 4x4 Kick + Sidechain Pump
+    var kFreq = 185 * Math.exp(-bT * 34) + 45;
+    var kick = Math.tanh(Math.sin(2 * Math.PI * kFreq * bT) * 1.8) * Math.exp(-bT * 9.5);
+    var sc = Math.min(1.0, 0.14 + 0.86 * (bT / (beatSec * 0.72)));
+
+    // Clap on 2 & 4
+    var clap = 0;
+    if(bIdx % 2 === 1 && bT < 0.18){
+      var cEnv = (bT < 0.011 ? 1.0 : (bT < 0.022 ? 0.85 : Math.exp(-(bT - 0.022) * 20)));
+      clap = (Math.random() * 2 - 1) * Math.sin(2 * Math.PI * 1700 * bT) * cEnv * 0.85;
+    }
+
+    // Offbeat Open Hat
+    var hat = 0;
+    var hT = bT - beatSec * 0.5;
+    if(hT >= 0 && hT < 0.18){
+      hat = ((Math.random() * 2 - 1) + Math.sin(2 * Math.PI * 5200 * hT)) * 0.35 * Math.exp(-hT * 22);
+    }
+
+    if(style === "house"){
+      var subBass = Math.sin(2 * Math.PI * 55 * Math.max(0, hT)) * Math.exp(-Math.max(0, hT) * 8) * (hT >= 0 ? 0.75 : 0);
+      out[i] = Math.tanh((kick * 0.95 + clap * 0.85 + hat * 0.75 + subBass) * 1.3) * 0.92;
+      continue;
+    }
+
+    var activeNote = null;
+    for(var r=0; r<riff.length; r++){
+      if(beatInLoop >= riff[r][0] && beatInLoop < riff[r][0] + riff[r][1]){ activeNote = riff[r]; break; }
+    }
+
+    var synthSample = 0;
+    if(activeNote){
+      var noteAge = (beatInLoop - activeNote[0]) * beatSec;
+      var m = activeNote[2] + (style === "supersaw" ? 24 : (style === "acid" ? 12 : 0));
+      var freq = 440 * Math.pow(2, (m - 69) / 12);
+
+      p1 = (p1 + freq / sr) % 1.0;
+      p2 = (p2 + (freq * 1.009) / sr) % 1.0;
+      pSub = (pSub + (freq * 0.5) / sr) % 1.0;
+
+      var saw = 2 * p1 - 1;
+      var pulse = (p2 < 0.48) ? 0.85 : -0.85;
+      var sub = Math.sin(2 * Math.PI * pSub);
+      var raw = 0.52 * saw + 0.42 * pulse + 0.55 * sub;
+
+      var cut = 520 + 3100 * Math.exp(-noteAge * 18);
+      if(style === "wobble"){
+        var wRate = (bIdx % 2 === 0) ? 4.33 : 8.66;
+        cut = 300 + 3000 * (0.5 + 0.5 * Math.sin(2 * Math.PI * wRate * t));
+      }else if(style === "supersaw"){
+        cut = 3200 + 3600 * Math.exp(-noteAge * 10);
+      }else if(style === "acid"){
+        cut = 380 + 4800 * Math.exp(-noteAge * 26);
+      }
+
+      var fCoeff = Math.min(0.76, 2 * Math.sin(Math.PI * Math.min(8500, cut) / sr));
+      var qDamp = (style === "acid") ? 0.12 : 0.20;
+      svfLow = svfLow + fCoeff * svfBand;
+      var svfHigh = raw - svfLow - qDamp * svfBand;
+      svfBand = fCoeff * svfHigh + svfBand;
+
+      var fltOut = svfLow + 0.68 * svfBand;
+      var gEnv = Math.min(1, noteAge / 0.003) * Math.exp(-Math.max(0, noteAge - activeNote[1]*beatSec*0.82) * 35);
+      synthSample = Math.tanh(fltOut * 2.9) * gEnv * sc;
+    }else{
+      svfLow *= 0.94; svfBand *= 0.94;
+    }
+
+    var mix = (style === "supersaw" || style === "acid")
+      ? (kick * 0.55 + clap * 0.65 + hat * 0.72 + synthSample * 0.95)
+      : (kick * 0.88 + clap * 0.75 + hat * 0.65 + synthSample * 0.92);
+    out[i] = Math.tanh(mix * 1.35) * 0.94;
+  }
+  return out;
+}
+
+function createDeckState(id, color, defaultStyle){
+  var f32 = generateClubTrackFloat32(defaultStyle, 44100);
+  var revF32 = reverseFloat32(f32);
+  return {
+    id: id,
+    color: color,
+    style: defaultStyle,
+    playing: false,
+    bpm: 130.0,
+    pitchRatio: 1.0,
+    filterHz: 9500,
+    vol: 0.95,
+    eqLow: id === "A" ? 3 : 0,
+    eqMid: id === "A" ? 0 : 2,
+    eqHigh: id === "A" ? 0 : 2,
+    killLow: false,
+    killMid: false,
+    killHigh: false,
+    angleRad: 0,
+    playheadSec: 0,
+    lastTickMs: performance.now(),
+    scratching: false,
+    rawF32: f32,
+    revRawF32: revF32,
+    buffer: makeBufferFromF32(f32, 44100),
+    revBuffer: makeBufferFromF32(revF32, 44100),
+    srcNode: null,
+    gainNode: null,
+    xfadeGainNode: null,
+    lowNode: null,
+    midNode: null,
+    highNode: null,
+    fltNode: null
+  };
+}
+
+var DECK_A = createDeckState("A", "#38BDF8", "benassi");
+var DECK_B = createDeckState("B", "#EC4899", "supersaw");
+var crossfaderVal = 0; // -100 (A) .. 0 (Center) .. +100 (B)
+
+function ensureDjAudioEngine(){
+  if(!djCtx){
+    var AC = window.AudioContext || window.webkitAudioContext;
+    djCtx = new AC();
+    djMasterGain = djCtx.createGain();
+    djMasterGain.gain.value = 0.95;
+    var lim = djCtx.createDynamicsCompressor();
+    lim.threshold.value = -0.5; lim.ratio.value = 20;
+    djMasterGain.connect(lim);
+    lim.connect(djCtx.destination);
+
+    [DECK_A, DECK_B].forEach(function(dk){
+      dk.buffer = makeBufferFromF32(dk.rawF32, djCtx.sampleRate);
+      dk.revBuffer = makeBufferFromF32(dk.revRawF32, djCtx.sampleRate);
+
+      dk.lowNode = djCtx.createBiquadFilter();
+      dk.lowNode.type = "lowshelf"; dk.lowNode.frequency.value = 180;
+
+      dk.midNode = djCtx.createBiquadFilter();
+      dk.midNode.type = "peaking"; dk.midNode.frequency.value = 1400; dk.midNode.Q.value = 1.0;
+
+      dk.highNode = djCtx.createBiquadFilter();
+      dk.highNode.type = "highshelf"; dk.highNode.frequency.value = 4200;
+
+      dk.fltNode = djCtx.createBiquadFilter();
+      dk.fltNode.type = "lowpass"; dk.fltNode.frequency.value = dk.filterHz; dk.fltNode.Q.value = 2.2;
+
+      dk.gainNode = djCtx.createGain();
+      dk.xfadeGainNode = djCtx.createGain();
+
+      dk.lowNode.connect(dk.midNode);
+      dk.midNode.connect(dk.highNode);
+      dk.highNode.connect(dk.fltNode);
+      dk.fltNode.connect(dk.gainNode);
+      dk.gainNode.connect(dk.xfadeGainNode);
+      dk.xfadeGainNode.connect(djMasterGain);
+    });
+    syncDjMixerGains();
+  }
+  if(djCtx.state === "suspended") djCtx.resume();
+}
+
+function syncDjMixerGains(){
+  if(!djCtx) return;
+  // Equal-power / constant-power crossfader law
+  var norm = (crossfaderVal + 100) / 200; // 0 = Full A, 0.5 = Center, 1 = Full B
+  var gainA = norm <= 0.5 ? 1.0 : Math.cos(((norm - 0.5) * 2) * (Math.PI / 2));
+  var gainB = norm >= 0.5 ? 1.0 : Math.cos(((0.5 - norm) * 2) * (Math.PI / 2));
+
+  [DECK_A, DECK_B].forEach(function(dk){
+    if(!dk.lowNode) return;
+    dk.lowNode.gain.setValueAtTime(dk.killLow ? -42 : dk.eqLow, djCtx.currentTime);
+    dk.midNode.gain.setValueAtTime(dk.killMid ? -42 : dk.eqMid, djCtx.currentTime);
+    dk.highNode.gain.setValueAtTime(dk.killHigh ? -42 : dk.eqHigh, djCtx.currentTime);
+    dk.fltNode.frequency.setValueAtTime(dk.filterHz, djCtx.currentTime);
+    dk.gainNode.gain.setValueAtTime(dk.vol, djCtx.currentTime);
+    dk.xfadeGainNode.gain.setValueAtTime(dk.id === "A" ? gainA : gainB, djCtx.currentTime);
+    if(dk.srcNode && !dk.scratching){
+      dk.srcNode.playbackRate.setValueAtTime(dk.pitchRatio, djCtx.currentTime);
+    }
+  });
+}
+
+function startDeckPlayback(dk, offsetSec){
+  ensureDjAudioEngine();
+  stopDeckSourceOnly(dk);
+  var dur = dk.buffer.duration;
+  var off = ((offsetSec !== undefined ? offsetSec : dk.playheadSec) % dur + dur) % dur;
+  dk.playheadSec = off;
+  var s = djCtx.createBufferSource();
+  s.buffer = dk.buffer;
+  s.loop = true;
+  s.playbackRate.value = dk.pitchRatio;
+  s.connect(dk.lowNode);
+  s.start(0, off);
+  dk.srcNode = s;
+  dk.playing = true;
+  dk.lastTickMs = performance.now();
+  document.getElementById("playDeck" + dk.id + "Btn").textContent = "⏸ Pause Deck " + dk.id;
+}
+
+function stopDeckSourceOnly(dk){
+  if(dk.srcNode){
+    try{ dk.srcNode.stop(); dk.srcNode.disconnect(); }catch(e){}
+    dk.srcNode = null;
+  }
+}
+
+function pauseDeckPlayback(dk){
+  stopDeckSourceOnly(dk);
+  dk.playing = false;
+  document.getElementById("playDeck" + dk.id + "Btn").textContent = "▶ Play Deck " + dk.id;
+}
+
+// Real-Time Bidirectional Vinyl Scratching Burst (Supports Forward & Reverse Platter Velocity!)
+var lastScratchBurstMs = 0;
+function triggerVinylScratchGrain(dk, velocityRatio){
+  ensureDjAudioEngine();
+  var now = performance.now();
+  if(now - lastScratchBurstMs < 28) return;
+  lastScratchBurstMs = now;
+
+  var isReverse = velocityRatio < 0;
+  var rate = Math.max(0.28, Math.min(3.2, Math.abs(velocityRatio)));
+  var buf = isReverse ? dk.revBuffer : dk.buffer;
+  var dur = buf.duration;
+  var off = isReverse ? (dur - dk.playheadSec) : dk.playheadSec;
+  off = ((off % dur) + dur) % Math.max(0.1, dur - 0.08);
+
+  var gSrc = djCtx.createBufferSource();
+  gSrc.buffer = buf;
+  gSrc.playbackRate.setValueAtTime(rate, djCtx.currentTime);
+
+  var gEnv = djCtx.createGain();
+  gEnv.gain.setValueAtTime(0.01, djCtx.currentTime);
+  gEnv.gain.linearRampToValueAtTime(1.15, djCtx.currentTime + 0.012);
+  gEnv.gain.exponentialRampToValueAtTime(0.01, djCtx.currentTime + 0.095);
+
+  gSrc.connect(gEnv);
+  gEnv.connect(dk.lowNode);
+  gSrc.start(0, off, 0.11);
+}
+
+// Automated Scratch Macros (Baby Scratch, Transformer Cut, Backspin)
+function runScratchMacro(dk, macroType){
+  ensureDjAudioEngine();
+  var wasPlaying = dk.playing;
+  dk.scratching = true;
+  stopDeckSourceOnly(dk);
+
+  var steps = macroType === "backspin" ? [-2.8, -2.4, -1.9, -1.4, -0.9, -0.5]
+            : (macroType === "transformer" ? [1.6, 0, -1.6, 0, 1.8, 0, -1.5, 1.2]
+            : [1.5, -1.4, 1.6, -1.5, 1.3, -1.2]);
+  var sIdx = 0;
+  var timer = setInterval(function(){
+    if(sIdx >= steps.length){
+      clearInterval(timer);
+      dk.scratching = false;
+      if(wasPlaying) startDeckPlayback(dk, dk.playheadSec);
+      return;
+    }
+    var v = steps[sIdx++];
+    dk.angleRad += v * 0.35;
+    dk.playheadSec = (dk.playheadSec + v * 0.04 + dk.buffer.duration) % dk.buffer.duration;
+    if(Math.abs(v) > 0.1) triggerVinylScratchGrain(dk, v);
+  }, 70);
+
+  // Also flash stage lights & broadcast scratch cue!
+  stageParticles.push({ kind:"spark", x:300 + Math.random()*580, y:140, vx:(Math.random()-0.5)*3, vy:-3.5, life:1, col:dk.color });
+}
+
+// ============================================================================
+// INTEGRATED 3D STAGE LIGHTS, LASERS, PYRO & DUAL WAVEFORM RENDERER
+// ============================================================================
+var stageCv = document.getElementById("deckLightStageCanvas"), sCtx = stageCv.getContext("2d");
+var stageParticles = [];
+var stageLaserGeo = "fan";
+var stageStrobe = false;
+var stageTick = 0;
+
+function spawnStagePyro(kind, col){
+  for(var i=0; i<28; i++){
+    var px = 120 + (i % 6) * 185 + (Math.random() - 0.5) * 20;
+    stageParticles.push({
+      kind: kind,
+      x: px,
+      y: stageCv.height - 6,
+      vx: (Math.random() - 0.5) * (kind === "spark" ? 3.2 : 1.4),
+      vy: -(2.8 + Math.random() * 4.2),
+      life: 1.0,
+      decay: 0.025 + Math.random() * 0.02,
+      col: col || (kind === "flame" ? "#F97316" : (kind === "cryo" ? "#BAE6FD" : "#FDE047"))
+    });
+  }
+}
+
+function triggerPerformancePad(padIdx){
+  ensureDjAudioEngine();
+  var btns = document.querySelectorAll(".perf-pad");
+  if(btns[padIdx]){
+    btns[padIdx].classList.add("pad-lit");
+    setTimeout(function(){ btns[padIdx].classList.remove("pad-lit"); }, 380);
+  }
+
+  var now = djCtx.currentTime;
+  if(padIdx === 0){
+    // [1] Pyro Flame + 50Hz Sub Drop Boom
+    spawnStagePyro("flame", "#F97316");
+    var o = djCtx.createOscillator(), g = djCtx.createGain();
+    o.type = "sine"; o.frequency.setValueAtTime(140, now); o.frequency.exponentialRampToValueAtTime(38, now + 0.55);
+    g.gain.setValueAtTime(0.95, now); g.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+    o.connect(g); g.connect(djMasterGain); o.start(now); o.stop(now + 0.62);
+  }else if(padIdx === 1){
+    // [2] Sparkulars + Synth Riser
+    spawnStagePyro("spark", "#FACC15");
+    var o2 = djCtx.createOscillator(), g2 = djCtx.createGain();
+    o2.type = "sawtooth"; o2.frequency.setValueAtTime(220, now); o2.frequency.exponentialRampToValueAtTime(1320, now + 0.45);
+    g2.gain.setValueAtTime(0.35, now); g2.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+    o2.connect(g2); g2.connect(djMasterGain); o2.start(now); o2.stop(now + 0.5);
+  }else if(padIdx === 2){
+    // [3] CO2 Cryo + White Noise Jet
+    spawnStagePyro("cryo", "#38BDF8");
+    var sr = djCtx.sampleRate, nBuf = djCtx.createBuffer(1, sr * 0.35, sr), nd = nBuf.getChannelData(0);
+    for(var i=0; i<nd.length; i++) nd[i] = (Math.random()*2 - 1) * Math.exp(-i / (sr * 0.12));
+    var ns = djCtx.createBufferSource(); ns.buffer = nBuf; ns.connect(djMasterGain); ns.start(now);
+  }else if(padIdx === 3){
+    // [4] Strobe Blinder + 1/16 Beat Roll
+    stageStrobe = true;
+    setTimeout(function(){ stageStrobe = false; }, 450);
+    runScratchMacro(DECK_A, "baby");
+  }else if(padIdx === 4){
+    // [5] 3D Laser Z-Tunnel + Laser Zap
+    stageLaserGeo = (stageLaserGeo === "tunnel") ? "fan" : "tunnel";
+    var o5 = djCtx.createOscillator(), g5 = djCtx.createGain();
+    o5.type = "sawtooth"; o5.frequency.setValueAtTime(1600, now); o5.frequency.exponentialRampToValueAtTime(110, now + 0.22);
+    g5.gain.setValueAtTime(0.45, now); g5.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+    o5.connect(g5); g5.connect(djMasterGain); o5.start(now); o5.stop(now + 0.25);
+  }else if(padIdx === 5){
+    // [6] Auto Scratch Combo
+    runScratchMacro(DECK_B.playing ? DECK_B : DECK_A, "transformer");
+  }else if(padIdx === 6){
+    // [7] Aerial Pyro + Festival Air Horn
+    spawnStagePyro("spark", "#EC4899");
+    [440, 554.37, 659.25].forEach(function(f){
+      var oh = djCtx.createOscillator(), gh = djCtx.createGain();
+      oh.type = "sawtooth"; oh.frequency.setValueAtTime(f, now);
+      gh.gain.setValueAtTime(0.22, now); gh.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+      oh.connect(gh); gh.connect(djMasterGain); oh.start(now); oh.stop(now + 0.45);
+    });
+  }else if(padIdx === 7){
+    // [8] Sovereign Finale (All Pyro + Lasers)
+    spawnStagePyro("flame", "#F97316");
+    spawnStagePyro("spark", "#D4AF37");
+    spawnStagePyro("cryo", "#00F5D4");
+  }
+
+  // Broadcast live cue to HawkShine & HawkRGB!
+  var padColors = ["#EF4444","#FACC15","#38BDF8","#FFFFFF","#00F5D4","#EC4899","#A855F7","#10B981"];
+  UI_STATE.activeColor = padColors[padIdx % padColors.length];
+  saveAndBroadcastUi(true);
+  if(suiteChan){
+    try{
+      suiteChan.postMessage({
+        type: "FFH_LIVE_FRAME",
+        frame: {
+          colors: [UI_STATE.activeColor, DECK_A.color, DECK_B.color, "#D4AF37"],
+          geo: stageLaserGeo,
+          flame: padIdx === 0 || padIdx === 7,
+          spark: padIdx === 1 || padIdx === 6 || padIdx === 7,
+          cryo: padIdx === 2 || padIdx === 7,
+          kick: padIdx === 3
+        }
+      });
+    }catch(e){}
+  }
+}
+
+function renderTurntablePlatter(cvId, dk){
+  var cv = document.getElementById(cvId); if(!cv) return;
+  var ctx = cv.getContext("2d");
+  var w = cv.width, h = cv.height, cx = w / 2, cy = h / 2, R = w * 0.46;
+
+  ctx.clearRect(0, 0, w, h);
+
+  // Outer Bezel & Strobe Dots
+  ctx.fillStyle = "#080C14";
+  ctx.beginPath(); ctx.arc(cx, cy, R + 6, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = dk.color;
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(dk.angleRad);
+
+  // Vinyl Grooves
+  for(var r = 38; r < R - 6; r += 8){
+    ctx.strokeStyle = (r % 16 === 0) ? "rgba(148, 163, 184, 0.22)" : "rgba(51, 65, 85, 0.35)";
+    ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.stroke();
+  }
+
+  // Circular Waveform Ring on Vinyl
+  ctx.strokeStyle = dk.color;
+  ctx.lineWidth = 1.8;
+  ctx.beginPath();
+  var d = dk.rawF32;
+  for(var a=0; a<64; a++){
+    var ang = (a / 64) * Math.PI * 2;
+    var sVal = Math.abs(d[Math.floor((a / 64) * d.length)] || 0);
+    var rad = (R * 0.62) + sVal * 22;
+    var vx = Math.cos(ang) * rad, vy = Math.sin(ang) * rad;
+    if(a === 0) ctx.moveTo(vx, vy); else ctx.lineTo(vx, vy);
+  }
+  ctx.closePath(); ctx.stroke();
+
+  // Center Record Label & High-Visibility Scratch Marker Line
+  ctx.fillStyle = dk.color;
+  ctx.beginPath(); ctx.arc(0, 0, 34, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = "#060911";
+  ctx.beginPath(); ctx.arc(0, 0, 7, 0, Math.PI * 2); ctx.fill();
+
+  // White DJ Scratch Cue Line
+  ctx.strokeStyle = "#FFFFFF";
+  ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(10, 0); ctx.lineTo(R - 4, 0); ctx.stroke();
+
+  ctx.restore();
+
+  // Center HUD Text
+  ctx.fillStyle = "#FFFFFF";
+  ctx.font = "900 11px monospace";
+  ctx.textAlign = "center";
+  ctx.fillText("DECK " + dk.id + (dk.scratching ? " [SCRATCH]" : ""), cx, cy + 28);
+}
+
+function renderMainDjLoop(nowMs){
+  stageTick += 0.03;
+
+  // Advance Platter Angles & Playheads for Playing Decks
+  [DECK_A, DECK_B].forEach(function(dk){
+    var dt = (nowMs - dk.lastTickMs) / 1000;
+    dk.lastTickMs = nowMs;
+    if(dk.playing && !dk.scratching){
+      var dur = dk.buffer.duration || 3.6923;
+      dk.playheadSec = (dk.playheadSec + dt * dk.pitchRatio) % dur;
+      dk.angleRad = (dk.angleRad + dt * 3.49 * dk.pitchRatio) % (Math.PI * 2); // 33.3 RPM
+    }
+  });
+
+  renderTurntablePlatter("platterCanvasA", DECK_A);
+  renderTurntablePlatter("platterCanvasB", DECK_B);
+
+  // Render Top Dual Waveform + Live 3D Laser/Pyro Stage Visualizer
+  var sw = stageCv.width, sh = stageCv.height;
+  sCtx.fillStyle = "#03060E";
+  sCtx.fillRect(0, 0, sw, sh);
+
+  if(stageStrobe && Math.floor(stageTick * 15) % 2 === 0){
+    sCtx.fillStyle = "rgba(255, 255, 255, 0.32)";
+    sCtx.fillRect(0, 0, sw, sh);
+  }
+
+  // Draw 6 Overhead 3D Stage Lasers Reacting to Deck A & Deck B
+  for(var l=0; l<6; l++){
+    var lx = 110 + l * 190;
+    var lCol = (l % 2 === 0) ? DECK_A.color : DECK_B.color;
+    sCtx.strokeStyle = lCol;
+    sCtx.globalAlpha = (DECK_A.playing || DECK_B.playing) ? 0.55 : 0.22;
+    sCtx.lineWidth = 2;
+    for(var r=-2; r<=2; r++){
+      var tx = lx + r * 45 + Math.sin(stageTick * 2 + l) * 55;
+      sCtx.beginPath(); sCtx.moveTo(lx, 0); sCtx.lineTo(tx, sh); sCtx.stroke();
+    }
+  }
+  sCtx.globalAlpha = 1;
+
+  // Draw Deck A (Top Half) & Deck B (Bottom Half) Scrolling Waveforms around Center Playhead!
+  [DECK_A, DECK_B].forEach(function(dk, idx){
+    var yMid = idx === 0 ? sh * 0.28 : sh * 0.72;
+    var data = dk.rawF32;
+    var dur = dk.buffer.duration || 3.6923;
+    var centerSample = Math.floor((dk.playheadSec / dur) * data.length);
+
+    sCtx.strokeStyle = dk.color;
+    sCtx.lineWidth = 1.6;
+    sCtx.beginPath();
+    for(var x=0; x<sw; x+=2){
+      var offsetSamples = (x - sw / 2) * 35;
+      var sIdx = ((centerSample + offsetSamples) % data.length + data.length) % data.length;
+      var y = yMid - data[sIdx] * 28;
+      if(x === 0) sCtx.moveTo(x, y); else sCtx.lineTo(x, y);
+    }
+    sCtx.stroke();
+  });
+
+  // Center Red Beat-Sync Playhead Line
+  sCtx.strokeStyle = "#FACC15";
+  sCtx.lineWidth = 2.5;
+  sCtx.beginPath(); sCtx.moveTo(sw / 2, 0); sCtx.lineTo(sw / 2, sh); sCtx.stroke();
+
+  // Step & Draw Pyro Particles
+  for(var p=stageParticles.length-1; p>=0; p--){
+    var pt = stageParticles[p];
+    pt.x += pt.vx; pt.y += pt.vy;
+    pt.life -= pt.decay;
+    if(pt.life <= 0){ stageParticles.splice(p, 1); continue; }
+    sCtx.globalAlpha = pt.life;
+    sCtx.fillStyle = pt.col;
+    sCtx.beginPath(); sCtx.arc(pt.x, pt.y, pt.kind === "spark" ? 3 : 9, 0, Math.PI * 2); sCtx.fill();
+  }
+  sCtx.globalAlpha = 1;
+
+  requestAnimationFrame(renderMainDjLoop);
+}
+
+// Wire Interactive Touch/Mouse Vinyl Scratching on Platters A & B
+function wirePlatterScratching(cvId, dk){
+  var cv = document.getElementById(cvId);
+  var lastPointerAngle = 0, wasPlayingBeforeScratch = false;
+
+  function getAngleFromCenter(e){
+    var r = cv.getBoundingClientRect();
+    var dx = e.clientX - (r.left + r.width / 2);
+    var dy = e.clientY - (r.top + r.height / 2);
+    return Math.atan2(dy, dx);
+  }
+
+  cv.addEventListener("pointerdown", function(e){
+    ensureDjAudioEngine();
+    wasPlayingBeforeScratch = dk.playing;
+    dk.scratching = true;
+    stopDeckSourceOnly(dk);
+    lastPointerAngle = getAngleFromCenter(e);
+    try{ cv.setPointerCapture(e.pointerId); }catch(err){}
+    document.getElementById("deckStatusHud").textContent = "💿 Scratching Deck " + dk.id + " Vinyl Platter!";
+  });
+
+  cv.addEventListener("pointermove", function(e){
+    if(!dk.scratching) return;
+    var curAngle = getAngleFromCenter(e);
+    var dAng = curAngle - lastPointerAngle;
+    if(dAng > Math.PI) dAng -= Math.PI * 2;
+    if(dAng < -Math.PI) dAng += Math.PI * 2;
+    lastPointerAngle = curAngle;
+
+    dk.angleRad += dAng;
+    var dur = dk.buffer.duration || 3.6923;
+    var dSec = (dAng / (Math.PI * 2)) * 1.8;
+    dk.playheadSec = ((dk.playheadSec + dSec) % dur + dur) % dur;
+
+    var velRatio = (dSec / 0.016);
+    if(Math.abs(velRatio) > 0.08){
+      triggerVinylScratchGrain(dk, velRatio);
+    }
+  });
+
+  function endScratch(){
+    if(!dk.scratching) return;
+    dk.scratching = false;
+    if(wasPlayingBeforeScratch){
+      startDeckPlayback(dk, dk.playheadSec);
+    }
+    document.getElementById("deckStatusHud").textContent = "🎧 Deck " + dk.id + " Vinyl Released • Locked in Groove";
+  }
+  cv.addEventListener("pointerup", endScratch);
+  cv.addEventListener("pointercancel", endScratch);
+}
+
+// Pure-JS ZIP & WAV Exporter for Combined Mashup Download
+function crc32Arr(u8){
+  var c = -1;
+  for(var i=0; i<u8.length; i++){
+    c ^= u8[i];
+    for(var k=0; k<8; k++) c = (c >>> 1) ^ (0xEDB88320 & -(c & 1));
+  }
+  return (c ^ -1) >>> 0;
+}
+
+function packageWavInZipBlob(filename, wavU8){
+  var nameBytes = new TextEncoder().encode(filename);
+  var crc = crc32Arr(wavU8);
+  var lhdr = new Uint8Array(30 + nameBytes.length);
+  var ldv = new DataView(lhdr.buffer);
+  ldv.setUint32(0, 0x04034b50, true); ldv.setUint16(4, 20, true);
+  ldv.setUint32(14, crc, true); ldv.setUint32(18, wavU8.length, true);
+  ldv.setUint32(22, wavU8.length, true); ldv.setUint16(26, nameBytes.length, true);
+  lhdr.set(nameBytes, 30);
+
+  var chdr = new Uint8Array(46 + nameBytes.length);
+  var cdv = new DataView(chdr.buffer);
+  cdv.setUint32(0, 0x02014b50, true); cdv.setUint16(4, 20, true); cdv.setUint16(6, 20, true);
+  cdv.setUint32(16, crc, true); cdv.setUint32(20, wavU8.length, true);
+  cdv.setUint32(24, wavU8.length, true); cdv.setUint16(28, nameBytes.length, true);
+  chdr.set(nameBytes, 46);
+
+  var eocd = new Uint8Array(22);
+  var edv = new DataView(eocd.buffer);
+  edv.setUint32(0, 0x06054b50, true); edv.setUint16(8, 1, true); edv.setUint16(10, 1, true);
+  edv.setUint32(12, chdr.length, true); edv.setUint32(16, lhdr.length + wavU8.length, true);
+  return new Blob([lhdr, wavU8, chdr, eocd], { type: "application/zip" });
+}
+
+(function(){
+  wirePlatterScratching("platterCanvasA", DECK_A);
+  wirePlatterScratching("platterCanvasB", DECK_B);
+
+  // Deck A & Deck B Play/Pause & Track Selection
+  document.getElementById("playDeckABtn").onclick = function(){
+    if(DECK_A.playing) pauseDeckPlayback(DECK_A); else startDeckPlayback(DECK_A);
+  };
+  document.getElementById("playDeckBBtn").onclick = function(){
+    if(DECK_B.playing) pauseDeckPlayback(DECK_B); else startDeckPlayback(DECK_B);
+  };
+
+  function loadTrackStyleIntoDeck(dk, style){
+    var wasPl = dk.playing;
+    pauseDeckPlayback(dk);
+    dk.style = style;
+    dk.rawF32 = generateClubTrackFloat32(style, 44100);
+    dk.revRawF32 = reverseFloat32(dk.rawF32);
+    dk.buffer = makeBufferFromF32(dk.rawF32, djCtx ? djCtx.sampleRate : 44100);
+    dk.revBuffer = makeBufferFromF32(dk.revRawF32, djCtx ? djCtx.sampleRate : 44100);
+    if(wasPl) startDeckPlayback(dk, 0);
+  }
+
+  document.getElementById("deckATrackSel").onchange = function(){ loadTrackStyleIntoDeck(DECK_A, this.value); };
+  document.getElementById("deckBTrackSel").onchange = function(){ loadTrackStyleIntoDeck(DECK_B, this.value); };
+
+  // Custom Audio File Upload for Deck A & Deck B
+  function wireDeckAudioUpload(btnId, inId, dk){
+    document.getElementById(btnId).onclick = function(){ document.getElementById(inId).click(); };
+    document.getElementById(inId).onchange = function(e){
+      var f = e.target.files && e.target.files[0]; if(!f) return;
+      ensureDjAudioEngine();
+      f.arrayBuffer().then(function(ab){
+        djCtx.decodeAudioData(ab, function(decoded){
+          pauseDeckPlayback(dk);
+          dk.rawF32 = decoded.getChannelData(0).slice();
+          dk.revRawF32 = reverseFloat32(dk.rawF32);
+          dk.buffer = decoded;
+          dk.revBuffer = makeBufferFromF32(dk.revRawF32, decoded.sampleRate);
+          startDeckPlayback(dk, 0);
+          document.getElementById("deckStatusHud").textContent = "✅ Loaded '" + f.name + "' into Deck " + dk.id + "!";
+        });
+      });
+    };
+  }
+  wireDeckAudioUpload("uploadDeckABtn", "uploadDeckAIn", DECK_A);
+  wireDeckAudioUpload("uploadDeckBBtn", "uploadDeckBIn", DECK_B);
+
+  // Scratch Macro Buttons
+  document.getElementById("scratchBabyABtn").onclick  = function(){ runScratchMacro(DECK_A, "baby"); };
+  document.getElementById("scratchTransABtn").onclick = function(){ runScratchMacro(DECK_A, "transformer"); };
+  document.getElementById("backspinABtn").onclick     = function(){ runScratchMacro(DECK_A, "backspin"); };
+  document.getElementById("scratchBabyBBtn").onclick  = function(){ runScratchMacro(DECK_B, "baby"); };
+  document.getElementById("scratchTransBBtn").onclick = function(){ runScratchMacro(DECK_B, "transformer"); };
+  document.getElementById("backspinBBtn").onclick     = function(){ runScratchMacro(DECK_B, "backspin"); };
+
+  // Pitch & Filter Sliders
+  document.getElementById("pitchRangeA").oninput = function(){
+    DECK_A.pitchRatio = +this.value / 100;
+    DECK_A.bpm = +(130 * DECK_A.pitchRatio).toFixed(1);
+    document.getElementById("pitchLblA").textContent = (this.value - 100 >= 0 ? "+" : "") + (this.value - 100) + "%";
+    document.getElementById("deckABpmBadge").textContent = DECK_A.bpm + " BPM";
+    syncDjMixerGains();
+  };
+  document.getElementById("pitchRangeB").oninput = function(){
+    DECK_B.pitchRatio = +this.value / 100;
+    DECK_B.bpm = +(130 * DECK_B.pitchRatio).toFixed(1);
+    document.getElementById("pitchLblB").textContent = (this.value - 100 >= 0 ? "+" : "") + (this.value - 100) + "%";
+    document.getElementById("deckBBpmBadge").textContent = DECK_B.bpm + " BPM";
+    syncDjMixerGains();
+  };
+  document.getElementById("filterRangeA").oninput = function(){
+    DECK_A.filterHz = +this.value;
+    document.getElementById("filterLblA").textContent = DECK_A.filterHz > 8500 ? "Open" : (DECK_A.filterHz + "Hz");
+    syncDjMixerGains();
+  };
+  document.getElementById("filterRangeB").oninput = function(){
+    DECK_B.filterHz = +this.value;
+    document.getElementById("filterLblB").textContent = DECK_B.filterHz > 8500 ? "Open" : (DECK_B.filterHz + "Hz");
+    syncDjMixerGains();
+  };
+
+  // 3-Band EQ Sliders & Kill Switches
+  function wireEqAndKills(dk, sfx){
+    document.getElementById("eqHigh" + sfx).oninput = function(){ dk.eqHigh = +this.value; syncDjMixerGains(); };
+    document.getElementById("eqMid" + sfx).oninput  = function(){ dk.eqMid  = +this.value; syncDjMixerGains(); };
+    document.getElementById("eqLow" + sfx).oninput  = function(){ dk.eqLow  = +this.value; syncDjMixerGains(); };
+    document.getElementById("volRange" + sfx).oninput = function(){ dk.vol = +this.value / 100; syncDjMixerGains(); };
+
+    [["killHigh","killHigh"],["killMid","killMid"],["killLow","killLow"]].forEach(function(pair){
+      var btn = document.getElementById(pair[0] + sfx);
+      btn.onclick = function(){
+        dk[pair[1]] = !dk[pair[1]];
+        btn.setAttribute("aria-pressed", String(dk[pair[1]]));
+        syncDjMixerGains();
+      };
+    });
+  }
+  wireEqAndKills(DECK_A, "A");
+  wireEqAndKills(DECK_B, "B");
+
+  // Crossfader
+  document.getElementById("crossfaderIn").oninput = function(){
+    crossfaderVal = +this.value;
+    var lbl = document.getElementById("xfaderStatusLbl");
+    if(crossfaderVal < -35) lbl.textContent = "◄ DECK A DOMINANT";
+    else if(crossfaderVal > 35) lbl.textContent = "DECK B DOMINANT ►";
+    else lbl.textContent = "CENTER MASHUP BLEND (A+B)";
+    syncDjMixerGains();
+  };
+
+  // 1-Click Song Combiner & Mashup Modes
+  function engageSongMashup(mode){
+    ensureDjAudioEngine();
+    // Phase-lock BPM & Playheads
+    DECK_B.pitchRatio = DECK_A.pitchRatio;
+    DECK_B.bpm = DECK_A.bpm;
+    document.getElementById("pitchRangeB").value = document.getElementById("pitchRangeA").value;
+    document.getElementById("deckBBpmBadge").textContent = DECK_B.bpm + " BPM";
+    crossfaderVal = 0;
+    document.getElementById("crossfaderIn").value = 0;
+    document.getElementById("xfaderStatusLbl").textContent = "🔗 COMBINED MASHUP ACTIVE (A+B)";
+
+    if(mode === "A_bass_B_top"){
+      DECK_A.killLow = false; DECK_A.killMid = false; DECK_A.killHigh = true;
+      DECK_B.killLow = true;  DECK_B.killMid = false; DECK_B.killHigh = false;
+    }else{
+      DECK_A.killLow = true;  DECK_A.killMid = false; DECK_A.killHigh = false;
+      DECK_B.killLow = false; DECK_B.killMid = false; DECK_B.killHigh = true;
+    }
+    ["High","Mid","Low"].forEach(function(band){
+      document.getElementById("kill" + band + "A").setAttribute("aria-pressed", String(DECK_A["kill" + band]));
+      document.getElementById("kill" + band + "B").setAttribute("aria-pressed", String(DECK_B["kill" + band]));
+    });
+    syncDjMixerGains();
+    startDeckPlayback(DECK_A, 0);
+    startDeckPlayback(DECK_B, 0);
+    spawnStagePyro("spark", "#34D399");
+    document.getElementById("deckStatusHud").textContent = "🔗 Combined Mashup Playing: Deck A + Deck B Phase-Locked at " + DECK_A.bpm + " BPM!";
+  }
+
+  document.getElementById("combineSongsMashupBtn").onclick = function(){ engageSongMashup("A_bass_B_top"); };
+  document.getElementById("mashupA_Bass_B_Top").onclick     = function(){ engageSongMashup("A_bass_B_top"); };
+  document.getElementById("mashupB_Bass_A_Top").onclick     = function(){ engageSongMashup("B_bass_A_top"); };
+
+  document.getElementById("syncBpmBtn").onclick = function(){
+    DECK_B.pitchRatio = DECK_A.pitchRatio;
+    DECK_B.bpm = DECK_A.bpm;
+    DECK_B.playheadSec = DECK_A.playheadSec;
+    if(DECK_B.playing) startDeckPlayback(DECK_B, DECK_A.playheadSec);
+    syncDjMixerGains();
+    document.getElementById("deckStatusHud").textContent = "🧲 Beat-Synced Deck B to Deck A (" + DECK_A.bpm + " BPM)!";
+  };
+
+  // Export Combined Mashup (.ZIP) & Load into Inline Audio Player
+  document.getElementById("exportMashupZipBtn").onclick = function(){
+    var aData = DECK_A.rawF32, bData = DECK_B.rawF32;
+    var len = Math.max(aData.length, bData.length);
+    var sr = 44100;
+    var wavSize = 44 + len * 2;
+    var out = new Uint8Array(wavSize);
+    var dv = new DataView(out.buffer);
+    function wStr(pos, s){ for(var i=0;i<s.length;i++) out[pos+i] = s.charCodeAt(i); }
+    wStr(0, "RIFF"); dv.setUint32(4, 36 + len * 2, true); wStr(8, "WAVE");
+    wStr(12, "fmt "); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true);
+    dv.setUint16(22, 1, true); dv.setUint32(24, sr, true);
+    dv.setUint32(28, sr * 2, true); dv.setUint16(32, 2, true);
+    dv.setUint16(34, 16, true); wStr(36, "data"); dv.setUint32(40, len * 2, true);
+
+    var ptr = 44;
+    for(var i=0; i<len; i++){
+      var sa = aData[i % aData.length] * DECK_A.vol;
+      var sb = bData[i % bData.length] * DECK_B.vol;
+      var mix = Math.tanh((sa + sb) * 0.78);
+      dv.setInt16(ptr, mix < 0 ? mix * 0x8000 : mix * 0x7FFF, true);
+      ptr += 2;
+    }
+
+    document.getElementById("mashupAudioPreview").src = URL.createObjectURL(new Blob([out], { type: "audio/wav" }));
+    var zipBlob = packageWavInZipBlob("HawkDeck_Combined_Mashup.wav", out);
+    var a = document.createElement("a"); a.href = URL.createObjectURL(zipBlob); a.download = "HawkDeck_Combined_Mashup.zip"; a.click();
+    document.getElementById("deckStatusHud").textContent = "💾 Exported Combined Mashup inside HawkDeck_Combined_Mashup.zip!";
+  };
+
+  // 8 Performance Pads & Keyboard Shortcuts (1..8)
+  document.querySelectorAll(".perf-pad").forEach(function(b){
+    b.onclick = function(){ triggerPerformancePad(+b.dataset.pad); };
+  });
+  window.addEventListener("keydown", function(e){
+    if(e.target && (e.target.tagName === "INPUT" || e.target.tagName === "SELECT")) return;
+    var n = parseInt(e.key, 10);
+    if(n >= 1 && n <= 8 && !e.repeat) triggerPerformancePad(n - 1);
+  });
+
+  document.getElementById("deckFsToggleBtn").onclick = function(){
+    var on = !document.body.classList.contains("deck-fs");
+    document.body.classList.toggle("deck-fs", on);
+    this.textContent = on ? "✕ Exit Full Console" : "⛶ Full Console";
+  };
+
+  initSharedCustomizerBar();
+  loadSharedUi();
+  requestAnimationFrame(renderMainDjLoop);
+})();
+</script>
+</body>
+</html>
